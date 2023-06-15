@@ -16,7 +16,7 @@ def recomendar_sitios(state: str, categoria: str):
     df_2 = df_1[df_1['categories'].str.contains(categoria, case=False)]
     df_3 = df_2.query("avg_rating >= 4")
 
-    devolver = ['name', 'address', 'state', 'avg_rating', 'categories', 'attributes']
+    devolver = ['name', 'address', 'avg_rating', 'categories', 'attributes']
     df_4 = df_3[devolver]
 
     features = ['latitude', 'longitude', 'avg_rating', 'review_count']
