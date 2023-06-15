@@ -10,21 +10,27 @@ df = pd.concat([df1, df2])
 
 app = FastAPI()
 
-@app.get("/")
-async def recommend(state: str, category: Optional[str] = None):
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.post("/recomendar-sitios")
+def recomendar_sitios(state: str, categoria: str):
     df_1 = df[df['state'].str.contains(state, case=False)]
-    if category:
-        df_2 = df_1[df_1['categories'].str.contains(category, case=False)]
-    else:
-        df_2 = df_1
+    df_2 = df_1[df_1['categories'].str.contains(categoria, case=False)]
     df_3 = df_2.query("avg_rating >= 4")
-    return_columns = ['name', 'address', 'state', 'avg_rating', 'categories', 'attributes']
-    df_4 = df_3[return_columns]
+
+    devolver = ['name', 'address', 'state', 'avg_rating', 'categories', 'attributes']
+    df_4 = df_3[devolver]
+
     features = ['latitude', 'longitude', 'avg_rating', 'review_count']
     X = df_3[features].values
-    similarity = cosine_similarity(X)
-    index = 0
-    sites_index = similarity[index].argsort()[:-11:-1]
-    similar_sites = df_4.iloc[sites_index]
-    
-    return similar_sites.head(10).to_dict()
+
+    Similitud = cosine_similarity(X)
+
+    Indice = 0
+    Sitios_indice = Similitud[Indice].argsort()[:-11:-1]
+    Sitios_similares = df_4.iloc[Sitios_indice]
+
+    return Sitios_similares.head(10)
+
