@@ -1,8 +1,6 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
-from typing import Optional
 
 df1 = pd.read_parquet('dataset/archivo1.parquet')
 df2 = pd.read_parquet('dataset/archivo2.parquet')
