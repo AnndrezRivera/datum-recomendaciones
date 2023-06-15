@@ -10,7 +10,7 @@ df = pd.concat([df1, df2])
 
 app = FastAPI()
 
-@app.post("/recomendar-sitios")
+@app.get("/recomendar-sitios")
 def recomendar_sitios(state: str, categoria: str):
     df_1 = df[df['state'].str.contains(state, case=False)]
     df_2 = df_1[df_1['categories'].str.contains(categoria, case=False)]
