@@ -11,13 +11,8 @@ app = FastAPI()
 @app.get("/")
 def recomendar_sitios(state: str = None, categoria: str = None):
     if state is None or categoria is None:
-        mensaje = '''
-        Gracias por elegir el modelo de recomendación de Datum Tech. 
-        Con este servicio, podrás descubrir los mejores lugares para visitar en tu estado, desde restaurantes y discotecas hasta hoteles y más. 
-        Solo tienes que ingresar al siguiente enlace: https://api-recomendaciones.onrender.com/docs y empezar a explorar las opciones que más te gusten.
-        '''
-        return {"message": mensaje}
-    
+        return 'Gracias por elegir el modelo de recomendación de Datum Tech. Con este servicio, podrás descubrir los mejores lugares para visitar en tu estado, desde restaurantes y discotecas hasta hoteles y más. Solo tienes que ingresar al siguiente enlace: https://api-recomendaciones.onrender.com/docs y empezar a explorar las opciones que más te gusten.'
+        
     df_1 = df[df['state'].str.contains(state, case=False)]
     df_2 = df_1[df_1['categories'].str.contains(categoria, case=False)]
     df_3 = df_2.query("avg_rating >= 4")
