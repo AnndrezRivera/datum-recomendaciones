@@ -9,7 +9,7 @@ df = pd.concat([df1, df2])
 app = FastAPI()
 
 @app.get("/")
-def recomendar_sitios(state: str, categoria: str):
+def recomendar_sitios(state: str = "CA", categoria: str = "chinese"):
     df_1 = df[df['state'].str.contains(state, case=False)]
     df_2 = df_1[df_1['categories'].str.contains(categoria, case=False)]
     df_3 = df_2.query("avg_rating >= 4")
