@@ -28,5 +28,5 @@ def recomendar_sitios(state: str, categoria: str):
     Sitios_indice = Similitud[Indice].argsort()[:-11:-1]
     Sitios_similares = df_4.iloc[Sitios_indice]
 
-    return Sitios_similares.head(10)
+    return Sitios_similares.head(5)
 
