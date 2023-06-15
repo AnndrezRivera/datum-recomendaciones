@@ -3,4 +3,4 @@ fastapi
 pandas
 numpy
 scikit-learn
-scipy
+pydantic
