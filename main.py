@@ -29,6 +29,6 @@ def recomendar_sitios(state: str, categoria: str):
     Sitios_similares = df_4.iloc[Sitios_indice]
 
     # Para que sea una lista
-    lista_sitios = Sitios_similares.to_dict(orient='records')
+    lista_sitios = Sitios_similares.to_list(orient='records')
 
     return lista_sitios[:5]
