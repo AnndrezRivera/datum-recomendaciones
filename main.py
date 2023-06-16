@@ -48,7 +48,7 @@ def recomendar_sitios(state: str = None, categoria: str = None):
     peso_kneighbors = 0.5
     Similitud_combinada = []
     for i in range(len(Similitud)):
-        similitud_coseno = Similitud[Indice][i]
+        similitud_coseno = Similitud[i][i]
         similitud_kneighbors = 1 - distances[0][indices[0].tolist().index(i)] / distances.max()
         similitud_combinada = peso_coseno * similitud_coseno + peso_kneighbors * similitud_kneighbors
         Similitud_combinada.append(similitud_combinada)
@@ -61,3 +61,4 @@ def recomendar_sitios(state: str = None, categoria: str = None):
     lista_sitios = Sitios_similares.to_dict(orient='records')
 
     return lista_sitios[:5]
+
