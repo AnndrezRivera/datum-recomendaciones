@@ -46,15 +46,18 @@ def recomendar_sitios(state: str = None, categoria: str = None):
     # Combinar las puntuaciones de similitud del coseno y kneighbors
     peso_coseno = 0.5
     peso_kneighbors = 0.5
-    Similitud_combinada = peso_coseno * Similitud + peso_kneighbors * (1 - distances / distances.max())
+    Similitud_combinada = []
+    for i in range(len(Similitud)):
+        similitud_coseno = Similitud[Indice][i]
+        similitud_kneighbors = 1 - distances[0][indices[0].tolist().index(i)] / distances.max()
+        similitud_combinada = peso_coseno * similitud_coseno + peso_kneighbors * similitud_kneighbors
+        Similitud_combinada.append(similitud_combinada)
 
     # Obtener los sitios recomendados
-    Sitios_indice = Similitud_combinada[Indice].argsort()[:-11:-1]
+    Sitios_indice = sorted(range(len(Similitud_combinada)), key=lambda i: Similitud_combinada[i], reverse=True)[:11]
     Sitios_similares = df_4.iloc[Sitios_indice]
 
     # Para que este ordenado por sitio
     lista_sitios = Sitios_similares.to_dict(orient='records')
 
     return lista_sitios[:5]
-
-
