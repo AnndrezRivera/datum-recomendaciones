@@ -7,3 +7,5 @@ scikit-learn
 pydantic
 pyarrow
 typing
+scikit-learn
+scipy
