@@ -1,4 +1,4 @@
-uvicorn
+gunicorn
 fastapi
 fastparquet
 pandas
