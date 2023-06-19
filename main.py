@@ -1,9 +1,10 @@
-from flask import Flask
+from fastapi import FastAPI
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.neighbors import NearestNeighbors
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from flask import Flask, render_template
 
 nltk.data.path.append('./nltk_data')
 sia = SentimentIntensityAnalyzer()
@@ -15,13 +16,10 @@ df = pd.concat([df1, df2])
 app = Flask(__name__)
 
 @app.route("/")
-def recomendar_sitios():
-    state = None
-    categoria = None
-
+def recomendar_sitios(state: str = None, categoria: str = None):
     if state is None or categoria is None:
         return 'Gracias por elegir el modelo de recomendación de Datum Tech. Con este servicio, podrás descubrir los mejores lugares para visitar en tu estado, desde restaurantes y discotecas hasta hoteles y más. Solo tienes que ingresar al siguiente enlace: https://api-recomendaciones.onrender.com/docs y empezar a explorar las opciones que más te gusten.'
-        
+
     df_1 = df[df['state'].str.contains(state, case=False)]
     df_2 = df_1[df_1['categories'].str.contains(categoria, case=False)]
     df_3 = df_2.query("avg_rating >= 4")
@@ -38,19 +36,17 @@ def recomendar_sitios():
     Sitios_indice = Similitud[Indice].argsort()[:-11:-1]
     Sitios_similares = df_4.iloc[Sitios_indice]
 
-    # Para que esté ordenado por sitio
+    # Para que este ordenado por sitio
     lista_sitios = Sitios_similares.to_dict(orient='records')
 
-    return str(lista_sitios[:5])
+    return lista_sitios[:5]
+
 
 @app.route("/sentimiento_cercano")
-def sentimiento_cercano():
-    state = None
-    categoria = None
-
+def sentimiento_cercano(state: str = None, categoria: str = None):
     if state is None or categoria is None:
         return 'Gracias por elegir el modelo de recomendación de Datum Tech. Con este servicio, podrás descubrir los mejores lugares para visitar en tu estado, desde restaurantes y discotecas hasta hoteles y más. Solo tienes que ingresar al siguiente enlace: https://api-recomendaciones.onrender.com/docs y empezar a explorar las opciones que más te gusten.'
-        
+
     df_1 = df[df['state'].str.contains(state, case=False)]
     df_2 = df_1[df_1['categories'].str.contains(categoria, case=False)]
     df_3 = df_2.query("avg_rating >= 4")
@@ -68,16 +64,12 @@ def sentimiento_cercano():
     Sitios_indice = indices[Indice][1:]
     Sitios_similares = df_4.iloc[Sitios_indice]
 
-    # Para que esté ordenado por sitio
+    # Para que este ordenado por sitio
     lista_sitios = Sitios_similares.to_dict(orient='records')
 
     df_5 = pd.DataFrame(lista_sitios)
     df_5['Puntaje de sentimiento'] = df_5['attributes'].apply(lambda x: sia.polarity_scores(x)['compound'])
     df_5['Sentimiento'] = df_5['Puntaje de sentimiento'].apply(lambda x: 'positivo' if x >= 0.0 else 'negativo')
     df_5 = df_5.drop('Puntaje de sentimiento', axis=1)
-
-    return str(df_5.to_dict(orient='records'))
-
-if __name__ == '__main__':
-    app.run()
-
+    
+return render_template('sentimientos.html', sitios=df_5.to_dict(orient='records'))
