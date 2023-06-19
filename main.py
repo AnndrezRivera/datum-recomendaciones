@@ -78,5 +78,3 @@ def sentimiento_cercano():
 
     return str(df_5.to_dict(orient='records'))
 
-if __name__ == '__main__':
-    app.run()
