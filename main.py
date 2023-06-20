@@ -86,4 +86,3 @@ def sentimiento_cercano(state: str = None, categoria: str = None):
     df_5['Sentimiento'] = df_5['Puntaje de sentimiento'].apply(lambda x: 'positivo' if x >= 0.0 else 'negativo')
     df_5 = df_5.drop('Puntaje de sentimiento', axis=1)
     return df_5.to_dict(orient='records')
-
