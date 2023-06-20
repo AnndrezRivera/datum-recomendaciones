@@ -2,12 +2,6 @@ from fastapi import FastAPI
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.neighbors import NearestNeighbors
-import nltk
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
-
-nltk.data.path.append('./nltk_data')
-sia = SentimentIntensityAnalyzer()
-
 
 df1 = pd.read_parquet('dataset/archivo1.parquet')
 df2 = pd.read_parquet('dataset/archivo2.parquet')
@@ -68,9 +62,6 @@ def sentimiento_cercano(state: str = None, categoria: str = None):
     lista_sitios = Sitios_similares.to_dict(orient='records')
 
     df_5 = pd.DataFrame(lista_sitios)
-    df_5['Puntaje de sentimiento'] = df_5['attributes'].apply(lambda x: sia.polarity_scores(x)['compound'])
-    df_5['Sentimiento'] = df_5['Puntaje de sentimiento'].apply(lambda x: 'positivo' if x >= 0.0 else 'negativo')
-    df_5 = df_5.drop('Puntaje de sentimiento', axis=1)
     return df_5.to_dict(orient='records')
 
 
