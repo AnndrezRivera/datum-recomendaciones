@@ -4,18 +4,32 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.neighbors import NearestNeighbors
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-from flask import Flask, render_template
 
 nltk.data.path.append('./nltk_data')
 sia = SentimentIntensityAnalyzer()
+
 
 df1 = pd.read_parquet('dataset/archivo1.parquet')
 df2 = pd.read_parquet('dataset/archivo2.parquet')
 df = pd.concat([df1, df2])
 
-app = Flask(__name__)
+app = FastAPI()
 
-@app.route("/")
+from fastapi.openapi.utils import get_openapi
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/openapi.json")
+def openapi():
+    return get_openapi(
+        title="My API",
+        version="1.0.0",
+        routes=app.routes,
+    )
+
+
+@app.get("/")
 def recomendar_sitios(state: str = None, categoria: str = None):
     if state is None or categoria is None:
         return 'Gracias por elegir el modelo de recomendación de Datum Tech. Con este servicio, podrás descubrir los mejores lugares para visitar en tu estado, desde restaurantes y discotecas hasta hoteles y más. Solo tienes que ingresar al siguiente enlace: https://api-recomendaciones.onrender.com/docs y empezar a explorar las opciones que más te gusten.'
@@ -42,7 +56,7 @@ def recomendar_sitios(state: str = None, categoria: str = None):
     return lista_sitios[:5]
 
 
-@app.route("/sentimiento_cercano")
+@app.get("/sentimiento_cercano")
 def sentimiento_cercano(state: str = None, categoria: str = None):
     if state is None or categoria is None:
         return 'Gracias por elegir el modelo de recomendación de Datum Tech. Con este servicio, podrás descubrir los mejores lugares para visitar en tu estado, desde restaurantes y discotecas hasta hoteles y más. Solo tienes que ingresar al siguiente enlace: https://api-recomendaciones.onrender.com/docs y empezar a explorar las opciones que más te gusten.'
@@ -71,5 +85,5 @@ def sentimiento_cercano(state: str = None, categoria: str = None):
     df_5['Puntaje de sentimiento'] = df_5['attributes'].apply(lambda x: sia.polarity_scores(x)['compound'])
     df_5['Sentimiento'] = df_5['Puntaje de sentimiento'].apply(lambda x: 'positivo' if x >= 0.0 else 'negativo')
     df_5 = df_5.drop('Puntaje de sentimiento', axis=1)
-    
-    return render_template('sentimientos.html', sitios=df_5.to_dict(orient='records'))
+    return df_5.to_dict(orient='records')
+
