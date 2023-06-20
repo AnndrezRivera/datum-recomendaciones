@@ -1,4 +1,4 @@
-gunicorn
+uvicorn
 fastapi
 fastparquet
 pandas
@@ -9,4 +9,3 @@ pyarrow
 typing
 scipy
 nltk
-Flask
