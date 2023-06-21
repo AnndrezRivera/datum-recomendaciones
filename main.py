@@ -25,7 +25,7 @@ def recomendar_sitios(state: str = None, categoria: str = None):
     X = df_3[features].values
 
     if df_4.empty:
-    return "Not information found"
+        return "Not information found"
    
     Similitud = cosine_similarity(X)
 
@@ -67,7 +67,7 @@ def lugares_cercanos(state: str = None, categoria: str = None):
     df_5 = pd.DataFrame(lista_sitios)
     
     if df_5.empty:
-    return "Not information found"
+        return "Not information found"
 
     
     return df_5.to_dict(orient='records')
