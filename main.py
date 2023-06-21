@@ -34,6 +34,10 @@ def recomendar_sitios(state: str = None, categoria: str = None):
         logger.info(f"df_4.shape={df_4.shape}")
 
         features = ['latitude', 'longitude', 'avg_rating', 'review_count']
+        for col in features:
+            df_3[col] = pd.to_numeric(df_3[col], errors='coerce')
+        df_3 = df_3.fillna(0)
+        
         X = df_3[features].values
 
         if df_4.empty:
