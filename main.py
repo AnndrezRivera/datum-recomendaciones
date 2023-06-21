@@ -21,7 +21,7 @@ def recomendar_sitios(state: str = None, categoria: str = None):
     devolver = ['name', 'address', 'avg_rating', 'categories', 'attributes']
     df_4 = df_3[devolver]
 
-    features = ['latitude', 'longitude', 'avg_rating', 'review_count']
+    features = ['latitude', 'longitude', 'avg_rating']
     X = df_3[features].values
 
     if df_4.empty:
