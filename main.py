@@ -2,6 +2,12 @@ from fastapi import FastAPI
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.neighbors import NearestNeighbors
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
 
 df1 = pd.read_parquet('dataset/archivo1.parquet')
 df2 = pd.read_parquet('dataset/archivo2.parquet')
