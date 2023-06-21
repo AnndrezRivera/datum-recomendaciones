@@ -3,8 +3,8 @@ import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.neighbors import NearestNeighbors
 
-df1 = pd.read_parquet('api_recomendaciones/Datasets/archivo1.parquet')
-df2 = pd.read_parquet('api_recomendaciones/Datasets/archivo2.parquet')
+df1 = pd.read_parquet('/dataset/archivo1.parquet')
+df2 = pd.read_parquet('/dataset/archivo2.parquet')
 df = pd.concat([df1, df2])
 
 app = FastAPI()
