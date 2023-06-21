@@ -39,7 +39,12 @@ def recomendar_sitios(state: str = None, categoria: str = None):
         if df_4.empty:
             return "Not information found"
        
-        Similitud = cosine_similarity(X)
+        try:
+            Similitud = cosine_similarity(X)
+            logger.info(f"Similitud calculada correctamente")
+        except Exception as e:
+            logger.error(f"Error al calcular la similitud del coseno: {e}")
+            raise
 
         Indice = 0
         Sitios_indice = Similitud[Indice].argsort()[:-11:-1]
@@ -52,6 +57,7 @@ def recomendar_sitios(state: str = None, categoria: str = None):
     except Exception as e:
         logger.error(f"Error al procesar la solicitud: {e}")
         return {"error": str(e)}
+
 
 
 
